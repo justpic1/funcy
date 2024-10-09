@@ -33,6 +33,11 @@ abstract class NodeState extends State<Node> {
       widget.position.set(position);
     });
   }
+  void update() {
+    setState(
+      () {widget.position.set(widget.position.value + const Offset(.00000000000001, .0000000000001));}
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -60,6 +65,7 @@ abstract class NodeState extends State<Node> {
                 children: [
                   Container(
                     width: double.infinity,
+                    height: 20,
                     padding: const EdgeInsets.all(2.0),
                     decoration: const BoxDecoration(
                       color: Colors.blue,

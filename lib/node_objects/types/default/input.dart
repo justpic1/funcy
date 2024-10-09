@@ -13,6 +13,16 @@ class InputNode extends ReducerNode {
   });
   @override
   InputNodeState createState() => InputNodeState();
+
+  @override 
+  void run(int key) {
+    signal.set([key]);
+    for (var output in outputConnectors) {
+      for (var input in output.connectedNode.inputConnectors) {
+        input.connectedNode.run(key);
+      }
+    }
+  }
 }
 class InputNodeState extends ReducerNodeState {
   @override
