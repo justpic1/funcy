@@ -46,13 +46,14 @@ class InputConnectorState extends State<InputConnector> {
 // ignore: must_be_immutable
 class OutputConnector extends Connector {
   ReducerNode connectedNode;
-  Signal<bool> connected = Signal(false);
   List<InputConnector> connectedInputs = [];
   
   OutputConnector(this.connectedNode, {super.key}){
     color = MyTheme.currentMyTheme.output;
   }
-  
+  void disconnect(InputConnector input){
+    connectedInputs.remove(input);
+  }
   @override
   OutputConnectorState createState() => OutputConnectorState();
 }
@@ -73,7 +74,6 @@ class OutputConnectorState extends State<OutputConnector> {
     ]);
   }
   void connect(InputConnector input){
-    widget.connected.value = true;
     widget.connectedInputs.add(input);
     addConnection(input);
   }
@@ -101,7 +101,9 @@ class Pair {
   }
   void checkDouble(){
     if (output != null && input != null && input!.widget.connectedNode != output!.widget.connectedNode){
-      connect();
+      if (!output!.widget.connectedInputs.contains(input!.widget)){
+        connect();
+      }
     }
   }
   void connect(){

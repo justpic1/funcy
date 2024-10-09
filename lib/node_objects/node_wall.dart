@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:functional_spreadsheet/node_objects/node.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
 import 'package:functional_spreadsheet/popups/painter.dart';
-import 'package:signals/signals.dart';
 
 class NodeWall extends StatefulWidget{
   static List<Node> children = [];
@@ -23,11 +22,9 @@ class NodeWall extends StatefulWidget{
     children.remove(node);
   }
   static void updateState() {
-    NodeWallState.current!.setState(() {
-        if (states.isNotEmpty) {
-          states[0].update();
-        }
-      });
+    if (states.isNotEmpty) {
+      states[0].update();
+    }
   }
 
   @override

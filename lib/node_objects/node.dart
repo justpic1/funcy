@@ -47,6 +47,9 @@ abstract class NodeState extends State<Node> {
         children: [
           inputs(),
           GestureDetector(
+            onTap: () {
+              NodeWall.run();
+            },
             onDoubleTap: (){
               setState(() {
                 NodeWall.removeNode(widget);

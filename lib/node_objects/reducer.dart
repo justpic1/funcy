@@ -6,6 +6,7 @@ import 'package:signals/signals_flutter.dart';
 
 // ignore: must_be_immutable
 class ReducerNode extends Node {
+  late ReducerNodeState rs;
   late Signal<dynamic> signal = Signal<dynamic>(0);
   late Signal<int> signalKey = Signal<int>(0);
   int inputCount;
@@ -23,12 +24,21 @@ class ReducerNode extends Node {
   });
   void run(int key) {
     // check if all input connector keys are the same
-    if (inputConnectors.every((element) => element.connectedNode.signalKey.value == key)) {
+    print(inputConnectors.map((element) => element.connectedNode.signalKey.value).toSet());
+    if ((inputConnectors.map((element) => element.connectedNode.signalKey.value).toSet().length == 1)) {
       // run the reducer function
-      signal.set(inputConnectors.map((e) => e.connectedNode.signal.value).toList());
+      signal.set(signal.value + 1);
+      // update the node rendering
+      rs.update();
+    }
+    for (OutputConnector output in outputConnectors) {
+      for (InputConnector input in output.connectedInputs) {
+        input.connectedNode.run(signal.value);
+      }
     }
     
   }
+
   @override
   ReducerNodeState createState() => ReducerNodeState();
     Offset getInputConnectorPosition(InputConnector input) {
@@ -60,11 +70,19 @@ class ReducerNode extends Node {
 }
 class ReducerNodeState extends NodeState {
   @override
+  void initState() {
+    super.initState();
+    (widget as ReducerNode).rs = this;
+  }
+  @override
   Widget body() {
+    
     return Container(
       height: 100,
       width: 100,
       color: Colors.green,
+      child: Text((widget as ReducerNode).signal.watch.toString()
+      ),
     );
   }
   @override

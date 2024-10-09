@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:functional_spreadsheet/node_objects/node.dart';
 import 'package:functional_spreadsheet/node_objects/node_wall.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/default.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
@@ -63,6 +62,9 @@ class SelectState extends State<RcNode> {
         child: GestureDetector(
           onTap: () {
             LinePainter.deleteLine(x, y);
+          },
+          onDoubleTap: () {
+            NodeWall.run();
           },
           onPanUpdate: (details) => {
             for (var state in NodeWall.states) {

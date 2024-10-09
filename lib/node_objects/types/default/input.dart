@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:functional_spreadsheet/node_objects/connector.dart';
 import 'package:functional_spreadsheet/node_objects/reducer.dart';
 // ignore: must_be_immutable
 class InputNode extends ReducerNode {
@@ -16,21 +17,25 @@ class InputNode extends ReducerNode {
 
   @override 
   void run(int key) {
-    signal.set([key]);
-    for (var output in outputConnectors) {
-      for (var input in output.connectedNode.inputConnectors) {
-        input.connectedNode.run(key);
+    signalKey.set(key);
+    for (OutputConnector output in outputConnectors) {
+      for (InputConnector input in output.connectedInputs) {
+        input.connectedNode.run(signalKey.value);
+        
       }
     }
   }
 }
 class InputNodeState extends ReducerNodeState {
+  
   @override
   Widget body() {
     return Container(
       height: 100,
       width: 100,
       color: Colors.green,
+      child: Text((widget as InputNode).signal.value.toString(),
+      ),
     );
   }
 }

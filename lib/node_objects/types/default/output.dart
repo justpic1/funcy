@@ -21,6 +21,8 @@ class OutputNodeState extends ReducerNodeState {
       height: 100,
       width: 100,
       color: Colors.green,
+      child: Text((widget as OutputNode).signal.value.toString(),
+      ),
     );
   }
 }

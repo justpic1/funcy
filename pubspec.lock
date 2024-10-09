@@ -25,22 +25,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
-  built_collection:
-    dependency: transitive
-    description:
-      name: built_collection
-      sha256: "376e3dd27b51ea877c28d525560790aee2e6fbb5f20e2f85d5081027d94e2100"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.1.1"
-  cached_value:
-    dependency: transitive
-    description:
-      name: cached_value
-      sha256: "1b886236da0022b1451b85a5eb67a2a32d9fd124029c8c43494af58bd7c7790e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
   characters:
     dependency: transitive
     description:
@@ -65,14 +49,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
-  crypto:
-    dependency: transitive
-    description:
-      name: crypto
-      sha256: ec30d999af904f33454ba22ed9a86162b35e52b44ac4807d1d93c288041d7d27
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.5"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -102,14 +78,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
-  flutter_sticky_header:
-    dependency: transitive
-    description:
-      name: flutter_sticky_header
-      sha256: "017f398fbb45a589e01491861ca20eb6570a763fd9f3888165a978e11248c709"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.5"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -139,6 +107,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -187,14 +163,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
-  memoize:
-    dependency: transitive
-    description:
-      name: memoize
-      sha256: "51481d328c86cbdc59711369179bac88551ca0556569249be5317e66fc796cac"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   meta:
     dependency: transitive
     description:
@@ -211,14 +179,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.0"
-  path_drawing:
-    dependency: transitive
-    description:
-      name: path_drawing
-      sha256: bbb1934c0cbb03091af082a6389ca2080345291ef07a5fa6d6e078ba8682f977
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.1"
   path_parsing:
     dependency: transitive
     description:
@@ -235,6 +195,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  pluto_grid:
+    dependency: "direct main"
+    description:
+      name: pluto_grid
+      sha256: "1d4cd9d2652742b556aa9b3230cc64672a3f63c34a9acc80fef794ab36ad903b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.0.0"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      sha256: "0c7c0cedd93788d996e33041ffecda924cc54389199cde4e6a34b440f50044cb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.27.7"
   signals:
     dependency: "direct main"
     description:
@@ -296,22 +272,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  swayze:
-    dependency: "direct main"
-    description:
-      name: swayze
-      sha256: ff9594547bf388360adfd1a23bf1f0580ed38257e4f5067173cd4fe152a761b1
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
-  swayze_math:
-    dependency: transitive
-    description:
-      name: swayze_math
-      sha256: "94c9cce5822354216b25101f60caf2d2fb186f8c0f89d39ee85ce29ab6d165cb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   term_glyph:
     dependency: transitive
     description:
@@ -336,22 +296,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
-  uuid:
-    dependency: transitive
-    description:
-      name: uuid
-      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.7"
-  value_layout_builder:
-    dependency: transitive
-    description:
-      name: value_layout_builder
-      sha256: "98202ec1807e94ac72725b7f0d15027afde513c55c69ff3f41bcfccb950831bc"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.1"
   vector_graphics:
     dependency: transitive
     description:

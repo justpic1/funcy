@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:functional_spreadsheet/main_objects/page_stack.dart';
 import 'package:functional_spreadsheet/popups/menu.dart';
+import 'package:functional_spreadsheet/sheet_objects/sheet.dart';
 import 'package:functional_spreadsheet/theme.dart';
 class SheetPage extends StatelessWidget {
   const SheetPage({super.key});
@@ -22,18 +23,12 @@ class SheetPage extends StatelessWidget {
               bottomRight: Radius.circular(30)),
               color: currentTheme.slate,
              ),
-             child: StackState.pages()
           ),
-          DataTable(
-            columns: const [
-              DataColumn(label: Text("r")),
-            ],
-            rows: const [
-              DataRow(cells: [DataCell(Text("Red"))]),
-              DataRow(cells: [DataCell(Text("Red"))]),
-              DataRow(cells: [DataCell(Text("Red"))]),
-            ],
-          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 120,
+            width: MediaQuery.of(context).size.width,
+            child: const Sheet(),
+          )
         ],
       )
     );

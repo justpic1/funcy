@@ -17,7 +17,6 @@ class LinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    print(1);
     final paint = Paint()
       ..color = Colors.black
       ..strokeWidth = 3.0;
@@ -38,7 +37,11 @@ class LinePainter extends CustomPainter {
     }
   }
   static addLines(List<List<Connector>> lines_) {
-    lines.add(lines_.expand((element) => element).toList());
+    for (List<Connector> line in lines_) {
+      if (!lines.contains(line)) {
+        lines.add(line);
+      }
+    }
   }
 
   @override
@@ -49,7 +52,10 @@ class LinePainter extends CustomPainter {
   static void deleteLine(double x, double y) {
     for (int i = lines.length - 1; i >= 0; i--) {
       if (inRange(x, y, lines[i][0] as InputConnector, lines[i][1] as OutputConnector)) {
+        (lines[i][1] as OutputConnector).disconnect(lines[i][0] as InputConnector);
+        //print((lines[i][1] as OutputConnector).connectedInputs);
         lines.removeAt(i);
+        NodeWall.updateState();
       }
     }
   }
