@@ -23,11 +23,21 @@ class SheetPage extends StatelessWidget {
               bottomRight: Radius.circular(30)),
               color: currentTheme.slate,
              ),
+             child: StackState.pages(),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height - 120,
             width: MediaQuery.of(context).size.width,
-            child: const Sheet(),
+            child: LayoutBuilder(
+                      builder: (context, constraint) {
+
+                        if (constraint.maxWidth == 0) {
+                          return Container();
+                        }
+                        
+                        return Sheet();
+                      },
+                    ),
           )
         ],
       )

@@ -32,7 +32,9 @@ class SelectState extends State<RcNode> {
     super.initState();
     on = widget.on;
     states.add(this);
-    if (NodeWall.children.isEmpty) {createTestNodes();createTestNodes();}
+    if (NodeWall.children.isEmpty) {
+      createTestNodes();
+    }
   }
   
   @override
@@ -138,7 +140,8 @@ class SelectState extends State<RcNode> {
             onTap: () {
           Navigator.of(context).pop();
           // Handle Option 1 action
-          NodeWall.addNode(InputNode(id: 1, position: Signal(Offset(x, y)), outputCount: 1,));
+          NodeWall.addNode(InputNode(position: Signal(Offset(x, y)), outputCount: 1));
+
           
             },
           ),
@@ -147,7 +150,7 @@ class SelectState extends State<RcNode> {
             onTap: () {
           Navigator.of(context).pop();
           // Handle Option 2 action
-          NodeWall.addNode(OutputNode(id: 1, position: Signal(Offset(x, y)), inputCount: 1,));
+          NodeWall.addNode(OutputNode(position: Signal(Offset(x, y)), inputCount: 1,));
             },
           ),
           ListTile(
@@ -173,12 +176,14 @@ class SelectState extends State<RcNode> {
       });
     }
     void createTestNodes() {
-      var inputNode = InputNode(id: 1, position: Signal(const Offset(50, 50)), outputCount: 1);
-      var outputNode = OutputNode(id: 2, position: Signal(const Offset(150, 150)), inputCount: 1);
-
+      var inputNode = InputNode(position: Signal(const Offset(50, 50)), outputCount: 1);
+      var outputNode = OutputNode(position: Signal(const Offset(150, 150)), inputCount: 1);
       NodeWall.addNode(inputNode);
       NodeWall.addNode(outputNode);
 
       // Connect the output of the input node to the input of the output node
+    }
+    void getNodesFromData() {
+
     }
 }

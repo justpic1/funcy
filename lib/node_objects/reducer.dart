@@ -1,53 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:functional_spreadsheet/data.dart';
 import 'package:functional_spreadsheet/node_objects/connector.dart';
 import 'package:functional_spreadsheet/node_objects/node.dart';
-import 'package:signals/signals_flutter.dart';
+import 'package:functional_spreadsheet/node_objects/node_wall.dart';
+import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
 
 
 // ignore: must_be_immutable
 class ReducerNode extends Node {
   late ReducerNodeState rs;
-  late Signal<dynamic> signal = Signal<dynamic>(0);
-  late Signal<int> signalKey = Signal<int>(0);
+  Type type = int;
+  late List<dynamic> signal = [];
+  late int signalKey = 0;
   int inputCount;
   int outputCount;
   late List<InputConnector> inputConnectors = List.generate(inputCount, (index) => InputConnector(this));
   late List<OutputConnector> outputConnectors = List.generate(outputCount, (index) => OutputConnector(this));
   ReducerNode({
     super.key, 
-    required super.id, 
+    required super.position, 
+    required super.label,
+    required this.inputCount,
+    required this.outputCount, 
+  });
+  ReducerNode.withSignal({
+    super.key, 
     required super.position, 
     required super.label,
     required this.inputCount,
     required this.outputCount,
-
+    required this.signal,
   });
   void run(int key) {
+    /*
+    print("NO");
     // check if all input connector keys are the same
-    print(inputConnectors.map((element) => element.connectedNode.signalKey.value).toSet());
     if ((inputConnectors.map((element) => element.connectedNode.signalKey.value).toSet().length == 1)) {
       // run the reducer function
-      signal.set(signal.value + 1);
+      signal = (signal + 1);
       // update the node rendering
       rs.update();
     }
     for (OutputConnector output in outputConnectors) {
       for (InputConnector input in output.connectedInputs) {
-        input.connectedNode.run(signal.value);
+        input.connectedNode.run(signal);
       }
     }
-    
+    */
   }
-
   @override
   ReducerNodeState createState() => ReducerNodeState();
-    Offset getInputConnectorPosition(InputConnector input) {
-    return Offset(
-      position.value.dx + 5,
-      // account for the fact that the input connectors are spaced out vertically and aligned to the center of the node
-      position.value.dy + calculateSquarePosition(inputConnectors.indexOf(input), inputCount) + 15,
-    );
+
+  Offset getInputConnectorPosition(InputConnector input) {
+  return Offset(
+    position.value.dx + 5,
+    // account for the fact that the input connectors are spaced out vertically and aligned to the center of the node
+    position.value.dy + calculateSquarePosition(inputConnectors.indexOf(input), inputCount) + 15,
+  );
   }
+
   Offset getOutputConnectorPosition(OutputConnector output) {
     return Offset(
       position.value.dx + 105,
@@ -72,7 +83,9 @@ class ReducerNodeState extends NodeState {
   @override
   void initState() {
     super.initState();
-    (widget as ReducerNode).rs = this;
+    NodeWall.states.add(this);
+    ReducerNode widget2 = widget as ReducerNode;
+    widget2.rs = this;
   }
   @override
   Widget body() {
@@ -81,7 +94,7 @@ class ReducerNodeState extends NodeState {
       height: 100,
       width: 100,
       color: Colors.green,
-      child: Text((widget as ReducerNode).signal.watch.toString()
+      child: Text((widget as ReducerNode).signal.toString()
       ),
     );
   }
@@ -105,7 +118,6 @@ class ReducerNodeState extends NodeState {
           
       ],
     );
-    
   }
   @override
   Column outputs() {
@@ -132,7 +144,71 @@ class ReducerNodeState extends NodeState {
       ],
     );
   }
-
-
+  @override
+  void popup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Reducer Node'),
+          content: TextField(
+            onChanged: (value) {
+              // Handle input change
+            },
+            decoration: const InputDecoration(hintText: "Enter value"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  @override
+  void deleteNode(){ 
+    if (NodeWall.children.whereType<InputNode>().length == 1 && widget is InputNode) {
+      // Replace this node with another node
+      NodeWall.addNode(InputNode(position: widget.position, outputCount: 1));
+      // popup dialog to state that the last input node cannot be deleted
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+        title: const Text('Warning'),
+        content: const Text('The last input node cannot be deleted.'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+          Navigator.of(context).pop();
+            },
+          ),
+        ],
+          );
+        },
+      );
+    }
+    for (InputConnector input in (widget as ReducerNode).inputConnectors) {
+      List<OutputConnector> connectedOutputsCopy = List.from(input.connectedOutputs);
+      // Iterate over the copy and perform the disconnection
+      for (OutputConnector output in connectedOutputsCopy) {
+        output.disconnect(input);
+      }
+    }
+    for (OutputConnector output in (widget as ReducerNode).outputConnectors) {
+      List<InputConnector> connectedInputsCopy = List.from(output.connectedInputs);
+      // Iterate over the copy and perform the disconnection
+      for (InputConnector input in connectedInputsCopy) {
+        output.disconnect(input);
+      }
+    }
+    DataState.deleteNode((widget as ReducerNode));
+    super.deleteNode();
+  }
 }
 

@@ -4,12 +4,10 @@ import 'package:signals/signals.dart';
 
 // ignore: must_be_immutable
 abstract class Node extends StatefulWidget {
-  int id;
   Signal<Offset> position;
   String label;
   Node({
     super.key,
-    required this.id, 
     required this.position,
     required this.label,
   });
@@ -18,11 +16,6 @@ abstract class Node extends StatefulWidget {
 }
 
 abstract class NodeState extends State<Node> {
-  @override
-  void initState() {
-    NodeWall.states.add(this);
-    super.initState();
-  }
   @override
   void dispose() {
     NodeWall.states.remove(this);
@@ -34,9 +27,21 @@ abstract class NodeState extends State<Node> {
     });
   }
   void update() {
+    if (!mounted) {
+      return;
+    }
     setState(
       () {widget.position.set(widget.position.value + const Offset(.00000000000001, .0000000000001));}
     );
+  }
+  void deleteNode() {
+    NodeWall.states.remove(this);
+    NodeWall.removeNode(widget);
+    
+  }
+  void popup(BuildContext context){
+    // ignore: avoid_print
+    print('popup');
   }
   @override
   Widget build(BuildContext context) {
@@ -48,12 +53,11 @@ abstract class NodeState extends State<Node> {
           inputs(),
           GestureDetector(
             onTap: () {
-              NodeWall.run();
+              popup(context);
             },
             onDoubleTap: (){
               setState(() {
-                NodeWall.removeNode(widget);
-                 
+                deleteNode();
               });
             },
             onPanUpdate: (details) => setState(() {

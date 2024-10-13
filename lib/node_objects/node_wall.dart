@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:functional_spreadsheet/node_objects/node.dart';
+import 'package:functional_spreadsheet/node_objects/reducer.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
 import 'package:functional_spreadsheet/popups/painter.dart';
 
 class NodeWall extends StatefulWidget{
-  static List<Node> children = [];
-  static List<NodeState> states = [];
+  static List<ReducerNode> children = [];
+  static List<ReducerNodeState> states = [];
   final Widget child;
   static int signalKey = 0;
   const NodeWall({super.key, required this.child});
-  static void addNode(Node node) {
+  static void addNode(ReducerNode node) {
     children.add(node);
   }
   static void run(){
