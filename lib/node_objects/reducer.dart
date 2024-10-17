@@ -49,6 +49,21 @@ class ReducerNode extends Node {
     */
   }
   @override
+  void setVal(dynamic value, String variableName){
+    if (variableName == 'inputCount') {
+      inputCount = value;
+    }
+    if (variableName == 'outputCount') {
+      outputCount = value;
+    }
+    if (variableName == 'signal') {
+      signal = value;
+    }
+    super.setVal(value, variableName);
+    rs.update();
+  }
+
+  @override
   ReducerNodeState createState() => ReducerNodeState();
 
   Offset getInputConnectorPosition(InputConnector input) {

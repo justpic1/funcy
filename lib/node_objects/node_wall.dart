@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:functional_spreadsheet/actions.dart';
 import 'package:functional_spreadsheet/node_objects/node.dart';
 import 'package:functional_spreadsheet/node_objects/reducer.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
+import 'package:functional_spreadsheet/pages/nodepage.dart';
 import 'package:functional_spreadsheet/popups/painter.dart';
 
 class NodeWall extends StatefulWidget{
@@ -10,8 +12,9 @@ class NodeWall extends StatefulWidget{
   final Widget child;
   static int signalKey = 0;
   const NodeWall({super.key, required this.child});
-  static void addNode(ReducerNode node) {
-    children.add(node);
+  static void addNode(Node node) {
+    //NodePage.actions.addAction(MyAction(node, null, null, 'create'));
+    children.add(node as ReducerNode);
   }
   static void run(){
     signalKey += 1;
@@ -20,7 +23,8 @@ class NodeWall extends StatefulWidget{
     }
   }
   static void removeNode(Node node) {
-    children.remove(node);
+    //NodePage.actions.addAction(MyAction(node, null, null, 'delete'));
+    children.remove(node as ReducerNode);
   }
   static void updateState() {
     if (states.isNotEmpty) {

@@ -18,12 +18,31 @@ class FunctionNode extends ReducerNode {
   @override
   void run(int key){
     List<ReducerNode> inputNodes = inputConnectors.expand((input) => input.connectedOutputs.map((output) => output.connectedNode)).toList();
-    print(types);
-    print(inputNodes.map((node) => node.signal.runtimeType));
-    print(inputNodes.every((node) => types.contains(node.signal.runtimeType)));
-    if (inputNodes.every((node) => types.contains(node.signal.runtimeType))) { 
+    try {
+      signal = [function(inputNodes.map((node) => node.signal).toList())];
+    }
+    catch (e) {
+      signal = ['Error'];
+      signal = ['Error'];
+      for (OutputConnector output in outputConnectors) {
+        for (InputConnector input in output.connectedInputs) {
+          input.connectedNode.run(key);
+        }
+      }
+    }
+    if (inputNodes.every((node) => types.contains(node.type))) {
         if (inputNodes.map((node) => node.signalKey).toSet().length == 1) {
-        signal = [(function(inputNodes.map((node) => node.signal).toList()))];
+          signalKey = inputNodes[0].signalKey;
+        
+        
+        if (signal[0] is List) {
+          signal = signal[0];
+          if (signal[0] is List) {
+            signal = signal[0];
+          }
+        }
+        
+        type = inputNodes[0].type;
         for (OutputConnector output in outputConnectors) {
           for (InputConnector input in output.connectedInputs) {
             input.connectedNode.run(key);
@@ -32,7 +51,7 @@ class FunctionNode extends ReducerNode {
       }
     }
     else {
-      signal = ['x'];
+      signal = ['Error'];
       for (OutputConnector output in outputConnectors) {
         for (InputConnector input in output.connectedInputs) {
           input.connectedNode.run(key);
@@ -57,6 +76,8 @@ class FunctionNodeState extends ReducerNodeState {
       height: 100,
       width: 100,
       color: Colors.green,
+      child: Text(widget2.signal.toString(),
+      ),
     );
   }
 

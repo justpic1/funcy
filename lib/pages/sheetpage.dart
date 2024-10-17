@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:functional_spreadsheet/actions.dart';
 import 'package:functional_spreadsheet/main_objects/page_stack.dart';
 import 'package:functional_spreadsheet/popups/menu.dart';
 import 'package:functional_spreadsheet/sheet_objects/sheet.dart';
 import 'package:functional_spreadsheet/theme.dart';
 class SheetPage extends StatelessWidget {
+  //static MyActions actions = MyActions();
   const SheetPage({super.key});
 
   @override

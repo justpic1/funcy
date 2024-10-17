@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:functional_spreadsheet/actions.dart';
 import 'package:functional_spreadsheet/node_objects/node_wall.dart';
+import 'package:functional_spreadsheet/pages/nodepage.dart';
 import 'package:signals/signals.dart';
 
 // ignore: must_be_immutable
@@ -11,11 +13,22 @@ abstract class Node extends StatefulWidget {
     required this.position,
     required this.label,
   });
-
-  
+    void setVal(dynamic value, String variableName){
+    if (variableName == 'create') {
+      NodeWall.removeNode(this);
+    }
+    if (variableName == 'delete') {
+      NodeWall.addNode(this);
+    }
+    if (variableName == 'position') {
+      position.set(value);
+    }
+    
+  }
 }
 
 abstract class NodeState extends State<Node> {
+  Offset? startValue;
   @override
   void dispose() {
     NodeWall.states.remove(this);
@@ -43,8 +56,10 @@ abstract class NodeState extends State<Node> {
     // ignore: avoid_print
     print('popup');
   }
+
   @override
   Widget build(BuildContext context) {
+    
     return Positioned(
       left: widget.position.value.dx,
       top: widget.position.value.dy,
@@ -60,20 +75,31 @@ abstract class NodeState extends State<Node> {
                 deleteNode();
               });
             },
+            /*
+            onPanStart: (details) => setState(() {
+              startValue = widget.position.value;
+              print(startValue);
+            }),
+            */
             onPanUpdate: (details) => setState(() {
               widget.position.set(Offset(
                 widget.position.value.dx + details.delta.dx,
                 widget.position.value.dy + details.delta.dy,
               ));
             }),
+            /*
+            onPanEnd: (details) => setState(() {
+              NodePage.actions.addAction(MyAction(widget, startValue, widget.position.value, 'position'));
+            }),
+            */
             child: ConstrainedBox(constraints: 
-              BoxConstraints.tight(const Size(100, 150)),
+              BoxConstraints.tight(const Size(110, 150)),
               child: Column(
                 children: [
                   Container(
                     width: double.infinity,
                     height: 20,
-                    padding: const EdgeInsets.all(2.0),
+                    padding: const EdgeInsets.all(0.2),
                     decoration: const BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.only(
@@ -86,14 +112,14 @@ abstract class NodeState extends State<Node> {
                           widget.label,
                           style: const TextStyle(
                             color: Colors.black,
-                            fontSize: 12,
+                            fontSize: 10,
                           ),
                         ),
                   ),
                     Expanded(
                     child: Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -124,7 +150,7 @@ abstract class NodeState extends State<Node> {
   }
   Widget body(){
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(4.0),
       decoration: const BoxDecoration(
         color: Colors.blue,
         borderRadius: BorderRadius.only(

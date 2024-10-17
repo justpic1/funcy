@@ -1,9 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:functional_spreadsheet/node_objects/node.dart';
 import 'package:functional_spreadsheet/node_objects/node_wall.dart';
 import 'package:functional_spreadsheet/node_objects/reducer.dart';
+import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/output.dart';
 import 'package:functional_spreadsheet/pages/sheetpage.dart';
 import 'package:pluto_grid/pluto_grid.dart';
@@ -73,6 +72,7 @@ class DataState extends State<Data> {
 
   @override
   Widget build(BuildContext context) {
+
     return MouseRegion(
       child: LayoutBuilder(
         builder: (context, constraint) {
@@ -83,13 +83,34 @@ class DataState extends State<Data> {
             onChanged: (event) => setState(() {
               editNode(event);
               data[event.rowIdx+1][event.columnIdx] = event.value+'-'+data[event.rowIdx+1][event.columnIdx].toString().split('-')[1]+'-'+data[event.rowIdx+1][event.columnIdx].toString().split('-')[2];
-                
+              NodeWall.run();
+              updateData();
             }),
             columns: [
+              
+              if (data.isEmpty || data[0].isEmpty)
+                PlutoColumn(
+                  title: '',
+                  field: '',
+                  type: PlutoColumnType.text(),
+                  readOnly: true,
+                  backgroundColor: Colors.grey,
+                )
+              else
               for (int i = 0; i < data[0].length; i++)
+                
                 parseColumn(data[0][i].toString()),
+
             ],
             rows: [
+              
+                if (data.isEmpty || data[0].isEmpty)
+                PlutoRow(
+                  cells: {
+                    '': PlutoCell(value: '')
+                  },
+                )
+                else
               for (int i = 1; i < data.length; i++)
                 parseRow(data[i]),
             ],
@@ -99,6 +120,9 @@ class DataState extends State<Data> {
     );
   }
 static List<List<dynamic>> transform(List<List<ReducerNode>> input) {
+  if (input.isEmpty || input[0][0].signal.isEmpty) {
+    return [];
+  }
   List<List<dynamic>> output = [];
 
   // Create a list to gather all signals
@@ -153,21 +177,41 @@ static List<List<dynamic>> transform(List<List<ReducerNode>> input) {
     );
   }
   void editNode(event) {
-    print("hi");
-    print(data[event.rowIdx + 1][event.columnIdx]);
     int nodeIndex = int.parse(data[event.rowIdx + 1][event.columnIdx].toString().split('-')[1]);
     int signalIndex = int.parse(data[event.rowIdx + 1][event.columnIdx].toString().split('-')[2]);
-    print(nodeIndex);
     ReducerNode node = NodeWall.children[nodeIndex];
     if (node is OutputNode) {
       return;
     }
+    dynamic value;
+    Type type = List<String>;
+    if (node is InputNode) {
+      String inputValue = node.signal.map((e) => node.signal.indexOf(e) == signalIndex ? event.value : e).join(',');
 
-    node.signal[signalIndex] = int.tryParse(event.value) ?? node.signal[signalIndex];
-
-    node.run(NodeWall.signalKey);
-    updateData();
+      try {
+          if (inputValue.replaceAll(' ', '').split(',').every((element) => element == 'true' || element == 'false')) {
+      value = inputValue.replaceAll(' ', '').split(',').map((e) => e == 'true').toList();
+      type = List<bool>;
+          }
+          else if (inputValue.replaceAll(' ', '').split(',').every((element) => int.tryParse(element) != null)) {
+      value = inputValue.replaceAll(' ', '').split(',').map((e) => int.parse(e)).toList();
+      type = List<int>;
+          }
+          else if (inputValue.replaceAll(' ', '').split(',').every((element) => double.tryParse(element) != null)) {
+      value = inputValue.replaceAll(' ', '').split(',').map((e) => double.parse(e)).toList();
+      type = List<double>;
+          }
+          else {
+      value = inputValue.split(',');
+      type = List<String>;
+          }
+        } catch (e) {
+          value = [];
+        }
+      node.signal = value;
+      node.type = type;
   }
+}
 
   void updateData() {
     Navigator.of(context).pop();

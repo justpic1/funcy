@@ -16,8 +16,14 @@ class OutputNode extends ReducerNode {
   @override
   void run(int key){
     List<ReducerNode> inputNodes = inputConnectors.expand((input) => input.connectedOutputs.map((output) => output.connectedNode)).toList();
-    signal = inputNodes.expand((node) => node.signal).toList();
+    if (inputNodes.isEmpty) {
+      return;
+    }
 
+    signal = inputNodes.expand((node) => node.signal).toList();
+    if (signal.isNotEmpty && signal[0] is List) {
+      signal = signal[0];
+    }
     rs.update();
   }
   @override

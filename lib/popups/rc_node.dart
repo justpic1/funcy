@@ -92,8 +92,6 @@ class SelectState extends State<RcNode> {
               constraints: const BoxConstraints(maxWidth: 80),
               items: [
                 PopupMenuItem<int>(value: 0, height: 20, child: Text('Add Node', style: style)),
-                PopupMenuItem<int>(value: 1, height: 20, enabled: false, child: Text('Delete Node', style: style)),
-                PopupMenuItem<int>(value: 2, height: 20, child: Text('Item 3', style: style)),
               ],
               ).then((value) {
               if (value != null) {
@@ -109,12 +107,6 @@ class SelectState extends State<RcNode> {
     switch (item) {
       case 0:
         nodeSelect();
-        break;
-      case 1:
-        // Handle Item 2 action
-        break;
-      case 2:
-        // Handle Item 3 action
         break;
         }
       }
@@ -156,9 +148,67 @@ class SelectState extends State<RcNode> {
           ListTile(
             title: Text('Function Node', style: style),
             onTap: () {
-          Navigator.of(context).pop();
-          // Handle Option 3 action
-          NodeWall.addNode(DefaultNodes.sum(Offset(x, y), 5));
+          // open function node menu
+              Navigator.of(context).pop();
+                showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  TextEditingController searchController = TextEditingController();
+                  List<String> functionKeys = DefaultNodes.functions.keys.toList();
+                  List<String> filteredKeys = functionKeys;
+
+                  return StatefulBuilder(
+                  builder: (context, setState) {
+                    return AlertDialog(
+                    backgroundColor: MyTheme.getCurrentTheme().mainBg,
+                    title: Column(
+                      children: [
+                      Text('Select a Function', style: style),
+                      TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                        hintText: 'Search...',
+                        hintStyle: style,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: MyTheme.getCurrentTheme().textColor),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: MyTheme.getCurrentTheme().textColor),
+                        ),
+                        ),
+                        style: style,
+                        onChanged: (value) {
+                        setState(() {
+                          filteredKeys = functionKeys
+                            .where((key) => key.toLowerCase().contains(value.toLowerCase()))
+                            .toList();
+                        });
+                        },
+                      ),
+                      ],
+                    ),
+                    content: SizedBox(
+                      width: double.maxFinite,
+                      child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: filteredKeys.length > 6 ? 6 : filteredKeys.length,
+                      itemBuilder: (context, index) {
+                        String key = filteredKeys[index];
+                        return ListTile(
+                        title: Text(key, style: style),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          NodeWall.addNode(DefaultNodes.functions[key]!(Offset(x, y), 2));
+                        },
+                        );
+                      },
+                      ),
+                    ),
+                    );
+                  },
+                  );
+                },
+                );
             },
           ),
         ],

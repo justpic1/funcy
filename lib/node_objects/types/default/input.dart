@@ -29,7 +29,6 @@ class InputNode extends ReducerNode {
     }
     rs.update();
   }  
-
 }
 class InputNodeState extends ReducerNodeState {
   late InputNode widget2;
@@ -49,6 +48,7 @@ class InputNodeState extends ReducerNodeState {
       ),
     );
   }
+
   @override
   void popup(BuildContext context){
       List<dynamic> value = [];
@@ -57,48 +57,75 @@ class InputNodeState extends ReducerNodeState {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: TextField(
-            onChanged: (inputValue) {
-              
-              try {
-                if (inputValue.split(',').every((element) => element == 'true' || element == 'false')) {
-                  value = inputValue.split(',').map((e) => e == 'true').toList();
+          content: SizedBox(
+            height: 100,
+            width: 300,
+            child: Column(
+              children: [
+              Row(
+                children: [
+                  const Text('Node Label: '),
+                  Expanded(
+                  child: TextField(
+                    controller: TextEditingController(text: widget2.label),
+                    onChanged: (inputType) {
+                      if (inputType.isNotEmpty) {
+                        widget2.label = inputType;
+                      }
+                    },
+                    
+                    decoration: const InputDecoration(hintText: "Enter name"),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                const Text('Node Value: '),
+                Expanded(
+                child: TextField(
+                  controller: TextEditingController(text: widget2.signal.toString().replaceAll('[', '').replaceAll(']', '')),
+                  onChanged: (inputValue) {
+                    try {
+                      if (inputValue.replaceAll(' ', '').split(',').every((element) => element == 'true' || element == 'false')) {
+                  value = inputValue.replaceAll(' ', '').split(',').map((e) => e == 'true').toList();
                   type = List<bool>;
-                }
-                else if (inputValue.split(',').every((element) => int.tryParse(element) != null)) {
-                  value = inputValue.split(',').map((e) => int.parse(e)).toList();
-                  print('hi');
+                      }
+                      else if (inputValue.replaceAll(' ', '').split(',').every((element) => int.tryParse(element) != null)) {
+                  value = inputValue.replaceAll(' ', '').split(',').map((e) => int.parse(e)).toList();
                   type = List<int>;
-                }
-                else if (inputValue.split(',').every((element) => double.tryParse(element) != null)) {
-                  value = inputValue.split(',').map((e) => double.parse(e)).toList();
+                      }
+                      else if (inputValue.replaceAll(' ', '').split(',').every((element) => double.tryParse(element) != null)) {
+                  value = inputValue.replaceAll(' ', '').split(',').map((e) => double.parse(e)).toList();
                   type = List<double>;
-                }
-                else // (widget2.type == String) 
-                {
+                      }
+                      else {
                   value = inputValue.split(',');
                   type = List<String>;
-                }
-              } catch (e) {
-                // Handle the error, e.g., show a message or set a default value
-                print(e);
-                value = [];
-              }
-                        },
-            decoration: const InputDecoration(hintText: "Enter value"),
+                      }
+                    } catch (e) {
+                      value = [];
+                    }
+                  },
+                  decoration: const InputDecoration(hintText: "Enter value"),
+                ),
+              ),
+            ],
+          ),
+          
+        ],
+            ),
           ),
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                Navigator.of(context).pop();
-                if (value.isNotEmpty) {
-                  widget2.signal = value;
-                  print(value.runtimeType);
-                  widget2.type = type;
-                }
-                update();
-                
+          Navigator.of(context).pop();
+          if (value.isNotEmpty) {
+            widget2.signal = value;
+            widget2.type = type;
+          }
+          update();
               },
             ),
           ],
