@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:functional_spreadsheet/actions.dart';
 import 'package:functional_spreadsheet/node_objects/node_wall.dart';
-import 'package:functional_spreadsheet/pages/nodepage.dart';
 import 'package:signals/signals.dart';
 
 // ignore: must_be_immutable

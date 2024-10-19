@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:functional_spreadsheet/node_objects/node.dart';
 import 'package:functional_spreadsheet/node_objects/node_wall.dart';
 import 'package:functional_spreadsheet/node_objects/reducer.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
@@ -72,7 +73,6 @@ class DataState extends State<Data> {
 
   @override
   Widget build(BuildContext context) {
-
     return MouseRegion(
       child: LayoutBuilder(
         builder: (context, constraint) {
@@ -80,6 +80,7 @@ class DataState extends State<Data> {
             return Container();
           }
           return PlutoGrid(
+
             onChanged: (event) => setState(() {
               editNode(event);
               data[event.rowIdx+1][event.columnIdx] = event.value+'-'+data[event.rowIdx+1][event.columnIdx].toString().split('-')[1]+'-'+data[event.rowIdx+1][event.columnIdx].toString().split('-')[2];

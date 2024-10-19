@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:functional_spreadsheet/actions.dart';
 import 'package:functional_spreadsheet/node_objects/node.dart';
 import 'package:functional_spreadsheet/node_objects/reducer.dart';
 import 'package:functional_spreadsheet/node_objects/types/default/input.dart';
-import 'package:functional_spreadsheet/pages/nodepage.dart';
 import 'package:functional_spreadsheet/popups/painter.dart';
 
 class NodeWall extends StatefulWidget{

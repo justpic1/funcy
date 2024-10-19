@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:functional_spreadsheet/actions.dart';
 import 'package:functional_spreadsheet/main_objects/page_stack.dart';
 import 'package:functional_spreadsheet/popups/menu.dart';
 import 'package:functional_spreadsheet/popups/rc_node.dart';
@@ -12,7 +10,7 @@ class NodePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool canAction = true;
+    //bool canAction = true;
     MyTheme currentTheme = MyTheme.getCurrentTheme();
     return Scaffold(
       
