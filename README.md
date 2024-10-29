@@ -1,16 +1,2 @@
 # functional_spreadsheet
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+A new Flutter project. I created this sproject in my 12th grade PLTW Engineering Design and Development class. It was a 4 week project, where we were taught the steps to engineering a solution to a problem. In this program I decided to merge a node system (think Blender's for inspiration) with a spreadsheet. This would visualize the function tree created in the spreadsheet so that less mistakes are made and the sheet is more readable. I did not finish the project, and with school continuing, and the big project starting soon, this may be on the shelf for quite some time. I hope anybody who comes across this enjoys it. 
